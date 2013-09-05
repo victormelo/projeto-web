@@ -1,0 +1,290 @@
+@font-face {
+    font-family: "Kabel";
+    src: url("../fonts/kabel.ttf");
+}
+@font-face {
+    font-family: "Yanone";
+    src: url("../fonts/YanoneKaffeesatz-Regular.ttf");
+}
+
+body, ul {
+	margin: 0px;
+}
+canvas { 
+	border:1px solid black; 
+}
+legend {
+	
+	padding: 0.2em 0.5em;
+	border:1px solid green;
+	color:rgb(110,152,26);
+	font-size:100%;
+	text-align:left;
+	background: #FFF;
+ }
+
+fieldset {
+	border:1px solid #666;
+	background: #FFF;
+	
+}
+textarea {
+	resize:none
+}
+label {
+  float:left;
+  width: 20%;
+  margin-right:0.5em;
+  padding-top:0.2em;
+  text-align:right;
+  font-weight:bold;
+}
+.navegacao a {
+	text-decoration:none;
+}
+input, button, textarea {
+	font-family: "Yanone";
+	font-size: 100%;
+
+}
+form input, textarea {
+	
+	width: 70%;
+	margin-bottom: 5px;
+}
+
+#main {
+	width: 968px;
+	margin: 0px auto 0px auto;
+	border: 1px solid #666;
+
+	background: rgb(251, 251, 251);
+
+	
+}	
+.form {
+	margin: 0px 10px 10px 10px;
+	width: 400px;
+	
+}
+
+.formCriarPartida {
+	float: left;
+	margin: 0px 10px 10px 10px;
+	
+}
+
+.listaJogos {
+	float: left;
+	margin: 0px 10px 10px 10px;
+}
+.btn {
+	width: auto;
+}
+
+.btn-start {
+	height: 55px;
+	margin-top: 2px;
+}
+
+.btnSubmit {
+	margin-left: 50%;
+}
+
+.form .btn {
+	margin-left: 40%;
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+
+.logado {
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #666;
+}
+#header {
+	font-size: 6em;
+	letter-spacing: 0.09em;
+	text-align: center;
+	font-family: "Yanone";
+	/*border: 1px solid #000;*/
+	border-bottom: 1px dotted;
+	color: rgb(210,252,126);
+	text-shadow: 4px 4px 2px rgba(150, 150, 150, 0.7);
+	background: rgb(191,210,85); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(191,210,85,1) 0%, rgba(142,185,42,1) 50%, rgba(114,170,0,1) 51%, rgba(158,203,45,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(191,210,85,1)), color-stop(50%,rgba(142,185,42,1)), color-stop(51%,rgba(114,170,0,1)), color-stop(100%,rgba(158,203,45,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(191,210,85,1) 0%,rgba(142,185,42,1) 50%,rgba(114,170,0,1) 51%,rgba(158,203,45,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(191,210,85,1) 0%,rgba(142,185,42,1) 50%,rgba(114,170,0,1) 51%,rgba(158,203,45,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(191,210,85,1) 0%,rgba(142,185,42,1) 50%,rgba(114,170,0,1) 51%,rgba(158,203,45,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(191,210,85,1) 0%,rgba(142,185,42,1) 50%,rgba(114,170,0,1) 51%,rgba(158,203,45,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfd255', endColorstr='#9ecb2d',GradientType=0 ); /* IE6-9 */
+
+}		
+
+#content {
+
+	font-family: "Yanone";	
+	float: left;
+	width: auto;
+	margin-left: 10px;
+	margin-top: 10px;
+	
+}
+
+#imagemJogo {
+	width: 500px;
+	height: 492px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	float: left;
+	
+	
+}
+
+#imagemJogo img {
+	width: 90%;
+	margin-left: 20px;
+	margin-top: 10px;
+	border: 2px solid;
+}
+
+#footer {
+	font-family: "Yanone";
+	background: rgba(131,150,15,1);
+	clear: both;
+	text-align: center;
+	font-size: 1.3em;
+	letter-spacing: 0.1em;
+	color: rgba(211,230,115,1);
+
+}
+
+#formCadastro {
+	font-family: "Yanone";
+	
+}
+
+
+
+.titulo {
+	margin-bottom: 5px;
+	text-align: center;
+}
+
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;    
+}
+
+.jogadores {
+	width: 450px;
+	float: left;
+	margin: 15px 15px 100px 0px;
+	padding: 10px;
+}
+
+.detalhesPartida {
+	width: 200px;
+	float: left;
+	
+}
+
+.nome-jogador {
+	color: #666;
+	font-size: 1.2em;
+	font-weight: bold;
+	float: left;
+	width: 100px;
+	overflow: hidden;
+
+}
+.jogador {
+	width: 70px;
+	color: #C66;
+}
+.container-jogador {
+	float: left;
+	width: 280px;
+	clear: both;
+	margin-top: 5px;
+	margin-left: 10px;
+}
+
+.bordered {
+	max-width: 500px;
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 1px 1px #ccc; 
+    -moz-box-shadow: 0 1px 1px #ccc; 
+    box-shadow: 0 1px 1px #ccc;         
+}
+
+.bordered tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;     
+}    
+    
+.bordered td, .bordered th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;    
+}
+/* ebf3fc */
+.bordered th {
+    background-color: #eff2a5;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eff2a5));
+    background-image: -webkit-linear-gradient(top, #fff, #eff2a5);
+    background-image:    -moz-linear-gradient(top, #fff, #eff2a5);
+    background-image:     -ms-linear-gradient(top, #fff, #eff2a5);
+    background-image:      -o-linear-gradient(top, #fff, #eff2a5);
+    background-image:         linear-gradient(top, #fff, #eff2a5);
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+}
+
+.bordered td:first-child, .bordered th:first-child {
+    border-left: none;
+}
+
+.bordered th:first-child {
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;
+}
+
+.bordered th:last-child {
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+
+.bordered th:only-child{
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+
+.bordered tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 6px;
+    -webkit-border-radius: 0 0 0 6px;
+    border-radius: 0 0 0 6px;
+}
+
+.bordered tr:last-child td:last-child {
+    -moz-border-radius: 0 0 6px 0;
+    -webkit-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
+}
+
