@@ -206,5 +206,4 @@ function atualizarJogadoresDaPartida(id_partida) {
 	xmlhttp.open("GET","jogadoresDisponiveisXML.php?id_partida="+id_partida+"&jogador1_pronto="+pronto1+"&jogador2_pronto="+pronto2,true);
 	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=iso-8859-1") 
 	xmlhttp.send(null);
-
 }

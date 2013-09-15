@@ -161,7 +161,7 @@ function Jogador(options) {
 
     var width = game.board.square_width;
     var height = game.board.square_height;
-    var extra = that.jogador == 1? 30 : 0;
+    var extra = that.jogador == 1 ? 30 : 0;
     that.x = 6*width + extra;
     that.y = 6*height + extra;
 
@@ -174,13 +174,10 @@ function Jogador(options) {
 
     };
 
-    that.update = function (destino) {
+    that.update = function (destino, paraFrente) {
         destino = destino % 24;
         var destinoX = game.board.squares[destino].col * game.board.square_width + extra;
         var destinoY = game.board.squares[destino].lin * game.board.square_height + extra;
-        console.log("dest1 "+destinoX + " " + destinoY);
-        console.log("that2 "+that.x + " " + that.y);
-                
         that.tickCount += 1;
         // console.log("destinoprox:"+ that.casa);
         // console.log(destinoX);
@@ -196,11 +193,38 @@ function Jogador(options) {
             } else if(that.y < destinoY) {
                 that.y += 5;
             }
-            if( that.x < destinoX && Math.floor((destino -1 )/ 6) === 0 || that.y < destinoY && Math.floor((destino -1 )/ 6) === 1 ||
-                that.x > destinoX && Math.floor((destino -1 )/ 6) === 2 || that.y > destinoY && Math.floor((destino -1 )/ 6) === 3)  {
-                that.casa = destino;
-                that.x = destinoX;
-                that.y = destinoY;
+            if(paraFrente) {
+                if( that.x < destinoX && Math.floor( (destino -1) / 6) === 0 || 
+                    that.x > destinoX && Math.floor( (destino -1) / 6) === 2 || 
+                    that.y < destinoY && Math.floor( (destino -1) / 6) === 1 ||
+                    that.y > destinoY && (Math.floor((destino -1) / 6) === 3 || Math.floor((destino -1)/ 6) === -1 ) 
+                    ) {
+                //if( (that.x  >= destinoX - extra && that.x <= destinoX  )
+                 //   &&
+                  //  (that.y  >= destinoY - extra && that.y <= destinoY  ))
+                // {
+                    console.log("entrei " + destino);
+                    that.casa = destino;
+                    that.x = destinoX;
+                    that.y = destinoY;
+
+                }
+            } else {
+                if( that.x > destinoX && Math.floor( (destino) / 6) === 0 || 
+                    that.x < destinoX && Math.floor( (destino) / 6) === 2 || 
+                    that.y > destinoY && Math.floor( (destino) / 6) === 1 ||
+                    that.y < destinoY && (Math.floor((destino) / 6) === 3 || Math.floor((destino -1)/ 6) === -1 ) 
+                    ) {
+                //if( (that.x  >= destinoX - extra && that.x <= destinoX  )
+                 //   &&
+                  //  (that.y  >= destinoY - extra && that.y <= destinoY  ))
+                // {
+                    console.log("entrei " + destino);
+                    that.casa = destino;
+                    that.x = destinoX;
+                    that.y = destinoY;
+
+                }
             }
         } 
     };
@@ -300,22 +324,23 @@ var game = {
             game.context.fillStyle = "#DBF8F0"
             game.context.strokeRect(x, y, square_width, square_height)
             game.context.fillRect(x, y, square_width, square_height)
-            game.context.font = 'bold 8pt Sans-serif';
+            game.context.font = 'bold 8pt Arial';
 
             game.context.fillStyle = 'black';
             game.context.fillText(i, x+2,y+square_height - 15 )
 
             game.context.fillText(square.name.slice(0,16), x+2,y+square_height - 2 )
-            if(square.img)
+            if(square.img) {
                 game.context.drawImage(square.img, x+15, y+5, 60, 60);
-
+            } 
+            
             if(square.type=="corner"){
                 
                 game.context.save()
                 game.context.translate(x,y)
                 game.context.rotate(1.5*Math.PI)
-                game.context.font = 'bold 8pt Sans-serif';
-                game.context.fillStyle = 'black';
+                // game.context.font = '8pt Sans-serif';
+                // game.context.fillStyle = 'black';
                 game.context.fillText(square.name.slice(0,16), -square_width+6,square_height - 2)
 
                 game.context.restore()
@@ -362,24 +387,48 @@ var game = {
             playing = false;
         }    
     },
-    animateJogador: function(player, destino) {
+    animateJogador: function(player, destino, paraFrente) {
+        //default é true
+        paraFrente = typeof paraFrente !== 'undefined' ? paraFrente : true;
+        console.log(paraFrente);
+
         game.jogador1.loop = !(destino === game.jogador1.casa) && game.jogador1.loop;
         game.jogador2.loop = !(destino === game.jogador2.casa) && game.jogador2.loop;
+        var destinoInc = 0;
         // console.log(destino);
         if (game.jogador1.loop || game.jogador2.loop) {
-            requestAnimFrame( function() { game.animateJogador(player, destino) } );
+            requestAnimFrame( function() { game.animateJogador(player, destino, paraFrente) } );
             game.drawBoard();
             if(player === 0) {
-                var destinoProx = Math.abs(destino - game.jogador1.casa) != 0 ? game.jogador1.casa + 1 : game.jogador1.casa;
+
+                if(paraFrente) {
+                    destinoInc = game.jogador1.casa + 1;
+                } else {
+                    var destinoInc = game.jogador1.casa - 1;
+                    if(destinoInc === -1) {
+                        destinoInc = 23;
+                    }
+                }
+
+                var destinoProx = Math.abs(destino - game.jogador1.casa) != 0 ? destinoInc : game.jogador1.casa;
+                // var destinoProx = Math.abs(destino - game.jogador1.casa) != 0 ? decremento : game.jogador1.casa;
                 
                 game.jogador1.render();
-                game.jogador1.update(destinoProx);
+                game.jogador1.update(destinoProx, paraFrente);
                     
             } else if(player === 1) {
-                var destinoProx = Math.abs(destino - game.jogador2.casa) != 0 ? game.jogador2.casa + 1 : game.jogador2.casa;
+                if(paraFrente) {
+                    destinoInc = game.jogador2.casa + 1;
+                } else {
+                    var destinoInc = game.jogador2.casa - 1;
+                    if(destinoInc === -1) {
+                        destinoInc = 23;
+                    }
+                }
+                var destinoProx = Math.abs(destino - game.jogador2.casa) != 0 ? destinoInc : game.jogador2.casa;
                 
                 game.jogador2.render();
-                game.jogador2.update(destinoProx);
+                game.jogador2.update(destinoProx, paraFrente);
                     
             }
         }
@@ -406,15 +455,14 @@ Button.prototype.checkClicked = function() {
 
 function mouseClicked(e) {
     mouseX = e.pageX - game.canvasHUD.offsetLeft;
-        console.log("clicked");
 
     mouseY = e.pageY - game.canvasHUD.offsetTop;
-    console.log("ex:" + mouseX + " mousey: "+mouseY);
 
     // if(btnPlay.checkClicked()) {
         // console.log("clicked");
     // }
 } 
+
 
 // function mouseOver(e) {
 //     mouseX = e.pageX - canvasBg.offsetLeft;
