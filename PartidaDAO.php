@@ -166,8 +166,46 @@ class PartidaDAO
 			return NULL;
 		}
 	}
-	
 
+	function getByDataId($id)
+	{
+		$dataAtual=date("Y-m-d", time());
+		$dataAtual=explode("-", $dataAtual);
+		
+		$horaAtual=date("H:i:s", time());
+		$horaAtual=explode(":", $horaAtual);
+		
+		$dataAntiga = date("Y-m-d",  mktime($horaAtual[0], $horaAtual[1]-30, $horaAtual[2], $dataAtual[1], $dataAtual[2], $dataAtual[0]));
+		$horaAntiga = date("H:i:s",  mktime($horaAtual[0], $horaAtual[1]-30, $horaAtual[2], $dataAtual[1], $dataAtual[2], $dataAtual[0]));
+		$sqltxt="select * from Partida where id=".$id." AND (dataCriacao='".$dataAntiga."' and horaCriacao>='".$horaAntiga."') or dataCriacao>'".$dataAntiga."'";
+		$this->Conectar();
+		$res=mysql_query($sqltxt,$this->conexao);
+		if ($res && mysql_num_rows($res)>0)
+		{
+			$Campos=mysql_fetch_array($res);
+			$Partida= new PartidaVO();
+			$Partida->id=$Campos['id'];
+			$Partida->id_jogador1=$Campos['id_jogador1'];
+			$Partida->id_jogador2=$Campos['id_jogador2'];
+			$Partida->jogador1_pronto=$Campos['jogador1_pronto'];
+			$Partida->jogador2_pronto=$Campos['jogador2_pronto'];
+			$Partida->descricao=$Campos['descricao'];
+			$Partida->dataCriacao=$Campos['dataCriacao'];
+			$Partida->horaCriacao=$Campos['horaCriacao'];
+			$Partida->dinheiro_jogador1=$Campos['dinheiro_jogador1'];
+			$Partida->dinheiro_jogador2=$Campos['dinheiro_jogador2'];
+
+			$Partida->status=$Campos['status'];
+
+			$this->Desconectar();
+			return $Partida;
+		}
+		else
+		{
+			$this->Desconectar();
+			return NULL;
+		}
+	}
 	function insert($Partida)
 	{	
 		$sqltxt="insert into `Partida` (id_jogador1, descricao, dataCriacao, horaCriacao) values ('".$Partida->id_jogador1."', '".$Partida->descricao."', '".$Partida->dataCriacao."', '".$Partida->horaCriacao."')";

@@ -1,10 +1,7 @@
 <?php
-define("VAZIO",0);
-define("PRETO",1);
-define("BRANCO",2);
 class Cartas
 {
-	function getCartas()
+	static function getCartas()
 	{
 		return array(
 					array('Sorte', 'Você achou um pacote de dinheiro no chão.', 50),
@@ -31,5 +28,15 @@ class Cartas
 
 					);
 	}
+
+	static function getCartaRandom() {
+		$cartas = self::getCartas();
+		$numero = rand (1 , count($cartas) ) - 1;
+		return $cartas[$numero];
+
+	}
 }
+
+print_r(Cartas::getCartaRandom());
+
 ?>

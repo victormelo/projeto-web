@@ -139,6 +139,47 @@ function dados (options) {
     return that;
 };
 
+function hudJogador (options) {
+    var that = {};                    
+    that.context = options.context;
+    that.nomeJogador1 = options.nomeJogador1;
+    that.nomeJogador2 = options.nomeJogador2;
+    that.dinheiroJogador1 = options.dinheiroJogador1;
+    that.dinheiroJogador2 = options.dinheiroJogador2;
+
+    that.atualizar = function(options) {
+        that.nomeJogador1 = options.nomeJogador1 || that.nomeJogador1;
+        that.nomeJogador2 = options.nomeJogador2 || that.nomeJogador2;
+        that.dinheiroJogador1 = options.dinheiroJogador1 || that.dinheiroJogador1;
+        that.dinheiroJogador2 = options.dinheiroJogador2 || that.dinheiroJogador2;
+        that.render();
+    }
+
+    that.render = function() {
+        that.context.clearRect(0, 0, 200, 500);
+        var offsetY = 10;
+        var offsetX = 10;
+        that.context.font = 'bold 25pt Yanone';
+        that.context.fillStyle = "#00c500";
+        that.context.fillText("Monopoly Online", offsetX, 35);
+        
+        that.context.font = '14pt Yanone';
+        that.context.fillStyle = 'black';        
+        that.context.drawImage(imgPeca1, offsetX + 15, offsetY + 50, 75, 75);
+        that.context.fillText("J1: "+that.nomeJogador1, offsetX, offsetY + 150);
+        that.context.fillText("Dinheiro: "+that.dinheiroJogador1+" $", offsetX, offsetY + 180);
+
+
+        that.context.drawImage(imgPeca2, offsetX + 15, offsetY + 235, 75, 75);
+        that.context.fillText("J2: "+that.nomeJogador2, offsetX, offsetY + 335);
+        that.context.fillText("Dinheiro: "+that.dinheiroJogador2+" $", offsetX, offsetY + 365);
+
+
+    }
+
+    return that;
+}
+
 function Square(options) {
     this.type = options.type;
     this.name = options.name;
@@ -203,7 +244,6 @@ function Jogador(options) {
                  //   &&
                   //  (that.y  >= destinoY - extra && that.y <= destinoY  ))
                 // {
-                    console.log("entrei " + destino);
                     that.casa = destino;
                     that.x = destinoX;
                     that.y = destinoY;
@@ -219,7 +259,6 @@ function Jogador(options) {
                  //   &&
                   //  (that.y  >= destinoY - extra && that.y <= destinoY  ))
                 // {
-                    console.log("entrei " + destino);
                     that.casa = destino;
                     that.x = destinoX;
                     that.y = destinoY;
@@ -273,7 +312,13 @@ var game = {
                 x : 30,
                 y: 500
         });
-
+        game.hudJogador = hudJogador({
+           context: game.contextHUD,
+           nomeJogador1: "victormelo",
+           nomeJogador2: "gerson",
+           dinheiroJogador1: "1000",
+           dinheiroJogador2: "1000"
+        });
         game.drawHUD();
     },
     drawBoard: function () {
@@ -368,9 +413,57 @@ var game = {
     }, 
     drawHUD: function() {
         game.dados.render();
+        game.hudJogador.render();
+    },
+    updateHUD: function() {
+        var xmlhttp;
+        var id_jogador1 = document.getElementById("id_jogador1");
+        var id_jogador2 = document.getElementById("id_jogador2");
+        var id_partida = document.getElementById("id_partida");
 
-    
-    }, 
+        if (window.XMLHttpRequest)
+        {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject)
+        {
+            // code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        else
+        {
+            alert("Your browser does not support XMLHTTP!");
+            return;
+        }
+
+        // Carrega a função de execução do AJAX
+        xmlhttp.onreadystatechange = function() 
+        {
+            if(xmlhttp.readyState == 4) {
+                // Quando estiver completado o Carregamento
+                var resultados = xmlhttp.responseXML;
+                var html='';
+                jogador=resultados.getElementsByTagName("jogador");
+
+                if(jogador[0]) { 
+                    game.hudJogador.atualizar({
+                        dinheiroJogador1 : jogador[0].getAttribute('dinheiro_jogador1'),
+                        dinheiroJogador2 : jogador[0].getAttribute('dinheiro_jogador2')
+                    });
+                }
+            setTimeout(function() { game.updateHUD() }, 1000);
+            
+            }
+
+
+        };
+        // Envia via método GET as informações
+        xmlhttp.open("GET","dadosJogadorXML.php?id_partida="+id_partida.value, true);
+        xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=iso-8859-1") 
+        xmlhttp.send(null);
+
+    },
     dadoLoop: function() {
         if(game.dados.isLooping()) {
 
@@ -388,9 +481,8 @@ var game = {
         }    
     },
     animateJogador: function(player, destino, paraFrente) {
-        //default é true
+        // por default paraFrente é true
         paraFrente = typeof paraFrente !== 'undefined' ? paraFrente : true;
-        console.log(paraFrente);
 
         game.jogador1.loop = !(destino === game.jogador1.casa) && game.jogador1.loop;
         game.jogador2.loop = !(destino === game.jogador2.casa) && game.jogador2.loop;
@@ -431,8 +523,26 @@ var game = {
                 game.jogador2.update(destinoProx, paraFrente);
                     
             }
+        } else {
+            var jogador = getPlayerCasa(player);
+ 
+            console.log("jogador: "+jogador.numero+"casa: "+jogador.casa);
         }
+
     }
+}
+
+function getPlayerCasa(player) {
+    var jogador = {};
+    if(player === 0) {
+        jogador.numero = 0;
+        jogador.casa = game.jogador1.casa;
+    } else if(player === 1) {
+        jogador.numero = 1;
+        jogador.casa = game.jogador2.casa;
+    }
+
+    return jogador;
 }
 
 function Button(xL, xR, yT, yB) {

@@ -14,7 +14,8 @@
 	include_once "UsuarioDAO.php";
 	$partidaDAO = new PartidaDAO();
 	$usuarioDAO = new UsuarioDAO();
-	$partida = $partidaDAO->getByIdAtiva($_GET['id_partida']);
+	$partida = $partidaDAO->getByDataId($_GET['id_partida']);
+
 	$jogador = 0;
 	if($_SESSION['id'] == $partida->id_jogador1) {
 		$partida->jogador1_pronto = $_GET['jogador1_pronto'];
@@ -33,13 +34,17 @@
 	@session_start();
    	
    	if (isset($_SESSION["login"]) && isset($_SESSION["id"]) && isset($_GET['id_partida']) ) {
-		if($partida && $usuario) {
-			echo "<partida loginUsuario='".$usuario->login."' jogador1_pronto='".$partida->jogador1_pronto."' jogador2_pronto='".$partida->jogador2_pronto."' jogador='".$jogador."'/>";
-			$partida->status = CHEIA;
-			$partidaDAO->update($partida);
+		if($partida->status != CANCELADA && $partida->status != ANDAMENTO) {
+			if($partida && $usuario) {
+				echo "<partida loginUsuario='".$usuario->login."' jogador1_pronto='".$partida->jogador1_pronto."' jogador2_pronto='".$partida->jogador2_pronto."' jogador='".$jogador."' status='".$partida->status."'/>";
+				$partida->status = CHEIA;
+				$partidaDAO->update($partida);
+			} else {
+				$partida->status = ESPERA;
+				$partidaDAO->update($partida);
+			}
 		} else {
-			$partida->status = ESPERA;
-			$partidaDAO->update($partida);
+			echo "<partida id='".$partida->id."' status='".$partida->status."'/>";
 		}
 	}
 

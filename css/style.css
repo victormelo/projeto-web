@@ -13,6 +13,11 @@ body, ul {
 canvas { 
 	border:1px solid black; 
 }
+
+#canvas, #canvasHUD {
+	background: #f3f5f4; 
+	
+}
 legend {
 	
 	padding: 0.2em 0.5em;
@@ -62,6 +67,12 @@ form input, textarea {
 
 	
 }	
+
+#main-jogo {
+	width: 968px;
+	margin: 5px auto 0px auto;
+}	
+
 .form {
 	margin: 0px 10px 10px 10px;
 	width: 400px;

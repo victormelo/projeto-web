@@ -30,7 +30,7 @@
 	<meta charset="UTF-8">
 	<title>Monopoly Online</title>
 </head>
-<body onload="atualizarJogadoresDaPartida(<?php echo $partida->id ?>)" >
+<body onload="atualizarPartida(<?php echo $partida->id ?>)" >
 	<div id="main">
 		<div id="header">
 			Partida #<?php echo $_GET['id_partida']; ?> 
@@ -44,7 +44,8 @@
 					<a href="logout.php"><input type="button" value="Logoff" class="btn"></a>
 					<?php echo $_SESSION['id'] == $partida->id_jogador1 ? 
 					"<a href='fecharPartida.php?id_partida=".$partida->id."'><input type='button' value='Fechar Partida' class='btn'></a>" : "";?>
-
+					<?php echo $_SESSION['id'] == $partida->id_jogador2 ? 
+					"<a href='sairPartida.php?id_partida=".$partida->id."'><input type='button' value='Sair da Partida' class='btn'></a>" : "";?>
 				</div>
 			</div>
 			
@@ -63,10 +64,14 @@
 					<span class="nome-jogador jogador">Jogador 2:</span>
 					<span class="nome-jogador" id="jogador2">Sem usuário</span>
 
-					<input type="checkbox" id="pronto2" value="<?php echo $partida->id_jogador2?>"<?php if(!$u2) echo "disabled";?> > Pronto<br>
+					<input type="checkbox" id="pronto2" value="<?php echo $partida->id_jogador2 ?>"<?php if(!$u2) echo "disabled";?> > Pronto<br>
 				</div>
-				
-				<input type="button" id="start" value="Começar Jogo" class="btn btn-start" disabled>
+
+				<form method="get" action="startPartida.php">
+					<?php if($u1) echo '<input type="submit" id="start" value="Começar Jogo" class="btn btn-start" disabled>';
+					 ?>
+					<input type="hidden" name="id_partida" value="<?php echo $partida->id; ?>">
+				</form>
 				
 			</div>
 			

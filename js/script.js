@@ -94,7 +94,6 @@ function atualizarPartidasDisponiveis() {
 		{ 
 			// Quando estiver completado o Carregamento
 			var resultados = xmlhttp.responseXML;
-			console.log(resultados);
 			var partida = resultados.getElementsByTagName("partida");
 			var html='';
 			var tabelaPartidas = document.getElementById("tabelaPartidas");
@@ -129,7 +128,7 @@ function atualizarPartidasDisponiveis() {
 
 }
 
-function atualizarJogadoresDaPartida(id_partida) {
+function atualizarPartida(id_partida) {
 	var xmlhttp;
 	var check1 = document.getElementById("pronto1");
 	var check2 = document.getElementById("pronto2");
@@ -161,8 +160,17 @@ function atualizarJogadoresDaPartida(id_partida) {
 			var resultados = xmlhttp.responseXML;
 			var html='';
 			var spanJogador2 = document.getElementById("jogador2");
-			partida=resultados.getElementsByTagName("partida")
+			partida=resultados.getElementsByTagName("partida");
+
+				
 			if(partida[0]) {
+				//status 2 = cancelada
+				if(partida[0].getAttribute("status") === '2') {
+					alert("Partida cancelada");
+					window.location.href="lobby.php";
+				} else if(partida[0].getAttribute("status") === '1') {
+					window.location.href="jogo.php?id_partida="+partida[0].getAttribute('id');
+				}
 				html += partida[0].getAttribute("loginUsuario");
 				
 				if(partida[0].getAttribute('jogador') === '2') {
@@ -188,14 +196,17 @@ function atualizarJogadoresDaPartida(id_partida) {
 
 
 			spanJogador2.innerHTML = html;
-			if(check1.checked && check2.checked) {
-				start.disabled = false;
-			} else {
-				start.disabled = true;
+			if(start) {
+				if(check1.checked && check2.checked) {
+					start.disabled = false;
+				} else {
+					start.disabled = true;
+				}
+				
 			}
 
 
-			setTimeout(function() { atualizarJogadoresDaPartida(id_partida)}, 1000);
+			setTimeout(function() { atualizarPartida(id_partida)}, 1000);
 
 		}
 	};
